@@ -24,4 +24,27 @@ class ApiClient {
     );
   }
 
+  Future<Response<dynamic>> getPostsByUser(int userId) {
+    return _dio.get(
+      '/posts',
+      queryParameters: {
+        'userId': userId,
+      },
+    );
+  }
+
+  Future<Response<dynamic>> createPost({
+    required String title,
+    required String body,
+    required int userId,
+  }) {
+    return _dio.post(
+      '/posts',
+      data: {
+        'title': title,
+        'body': body,
+        'userId': userId,
+      },
+    );
+  }
 }

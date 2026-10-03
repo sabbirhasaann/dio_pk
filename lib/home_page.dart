@@ -26,6 +26,9 @@ class _HomePageState extends State<HomePage> {
     try {
       final response = await client.getPost(id);
       debugPrint(response.toString());
+      debugPrint("Response status code... ${response.statusCode}");
+      debugPrint("Response data... ${response.data}");
+      debugPrint("Reponse headers... ${response.headers}");
     } catch (e) {
       debugPrint(e.toString());
     }
