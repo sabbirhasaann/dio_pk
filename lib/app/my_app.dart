@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Dio',
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Lato',
       ),
+
       home: HomePage(),
     );
   }
