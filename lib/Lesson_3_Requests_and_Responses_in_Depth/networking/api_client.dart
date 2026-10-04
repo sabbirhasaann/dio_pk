@@ -34,10 +34,31 @@ class ApiClient {
     );
   }
 
-  Future<Response<dynamic>> createPost({required String title, required String body, required int userId}) async{
-    return _dio.post(
+  Future<Response<dynamic>> createPost({
+    required String title,
+    required String body,
+    required int userId,
+  }) async {
+    return await _dio.post(
       '/posts',
       data: {
+        'title': title,
+        'body': body,
+        'userId': userId,
+      },
+    );
+  }
+
+  Future<Response<dynamic>> updatePost({
+    required int id,
+    required String title,
+    required String body,
+    required int userId,
+  }) async {
+    return await _dio.put(
+      '/post/$id',
+      data:{
+        'id': id,
         'title': title,
         'body': body,
         'userId': userId,
