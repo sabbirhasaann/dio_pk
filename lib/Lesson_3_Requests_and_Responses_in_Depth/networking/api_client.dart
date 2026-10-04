@@ -80,4 +80,15 @@ class ApiClient {
   Future<Response<dynamic>> deletePost(int id) {
     return _dio.delete('/posts/$id');
   }
+
+  Future<Response<dynamic>> headerAtRequestLevel() async {
+    return _dio.get(
+      '/posts',
+      options: Options(
+        headers: {
+          'X-Vlient-Version': '1.0.0',
+        },
+      ),
+    );
+  }
 }
