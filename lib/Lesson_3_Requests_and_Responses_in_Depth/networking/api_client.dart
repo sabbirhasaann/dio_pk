@@ -57,12 +57,24 @@ class ApiClient {
   }) async {
     return await _dio.put(
       '/post/$id',
-      data:{
+      data: {
         'id': id,
         'title': title,
         'body': body,
         'userId': userId,
-      }
+      },
+    );
+  }
+
+  Future<Response<dynamic>> updatePostTitle({
+    required int id,
+    required String title,
+  }) {
+    return _dio.patch(
+      '/posts/$id',
+      data: {
+        'title': title,
+      },
     );
   }
 }
