@@ -77,4 +77,8 @@ class ApiClient {
       },
     );
   }
+
+  Future<Response<dynamic>> deletePost(int id) {
+    return _dio.delete('/posts/$id');
+  }
 }
