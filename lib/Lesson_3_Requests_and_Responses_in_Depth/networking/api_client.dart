@@ -105,6 +105,14 @@ class ApiClient {
     return await _dio.post(
       '/profile/',
       data: formData,
+      onSendProgress: (sent, total) {
+        if (total != -1) {
+          final progress = sent / total;
+          print(
+            'Upload: ${(progress * 100).toStringAsFixed(1)}%',
+          );
+        }
+      },
     );
   }
 }
