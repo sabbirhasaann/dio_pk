@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 
+import '../models/create_post.dart';
+import '../models/post.dart';
+
 class ApiClient {
   ApiClient()
     : _dio = Dio(
@@ -34,18 +37,14 @@ class ApiClient {
     );
   }
 
-  Future<Response<dynamic>> createPost({
-    required String title,
-    required String body,
-    required int userId,
-  }) async {
-    return await _dio.post(
+  Future<Post> createPost(CreatePost post) async {
+    final response = await _dio.post(
       '/posts',
-      data: {
-        'title': title,
-        'body': body,
-        'userId': userId,
-      },
+      data: post.toJson(),
+    );
+
+    return Post.fromJson(
+      response.data as Map<String, dynamic>,
     );
   }
 

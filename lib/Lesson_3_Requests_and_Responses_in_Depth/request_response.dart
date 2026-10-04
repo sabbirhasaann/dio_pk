@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'networking/api_client.dart';
 import 'models/post.dart';
+import 'models/create_post.dart';
 
 class RequestResponse extends StatefulWidget {
   const RequestResponse({super.key});
@@ -17,6 +18,12 @@ class _RequestResponseState extends State<RequestResponse> {
   bool isLoading = false;
   late final ApiClient client;
   List<Post> posts = [];
+
+  int userId = 12;
+  String title = "";
+  String body = "";
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -52,6 +59,25 @@ class _RequestResponseState extends State<RequestResponse> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  Future<void> createPost() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final request = CreatePost(
+        userId: userId,
+        title: title,
+        body: body,
+      );
+
+      try {
+        final response = await client.createPost(request);
+        debugPrint(response.toString());
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     }
   }
 
@@ -110,11 +136,129 @@ class _RequestResponseState extends State<RequestResponse> {
               },
             ),
           ],
-          
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 32,
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: .spaceBetween,
+                    mainAxisSize: .min,
+                    spacing: 32,
+                    children: [
+                      Column(
+                        spacing: 10,
+                        children: [
+                          TextFormField(
+                            decoration: InputDecoration(
+                              label: Text(
+                                'UserId',
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Value mustn't be null";
+                              }
+
+                              if (value.contains(RegExp(r'[A-Z][a-z]'))) {
+                                return "Value should be numberic value only";
+                              }
+
+                              return null;
+                            },
+
+                            onSaved: (newValue) {
+                              setState(() {
+                                userId = int.parse(newValue.toString());
+                              });
+                            },
+                          ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              label: Text(
+                                'Title',
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == "") {
+                                return "Value shouldn't be empty";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              setState(() {
+                                title = newValue!;
+                              });
+                            },
+                          ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              label: Text(
+                                'Body',
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              alignLabelWithHint: true,
+                            ),
+                            textAlignVertical: TextAlignVertical.top,
+                            maxLines: 5,
+                            validator: (value) {
+                              if (value == "") {
+                                return "Value shouldn't be empty";
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) {
+                              setState(() {
+                                body = newValue!;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        mainAxisAlignment: .end,
+                        spacing: 10,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('Cancel'),
+                          ),
+
+                          ElevatedButton(
+                            onPressed: createPost,
+                            child: Text('Create'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
         child: Icon(
           Icons.add,
         ),
