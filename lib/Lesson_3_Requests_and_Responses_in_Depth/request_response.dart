@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'networking/api_client.dart';
+import 'models/post.dart';
 
 class RequestResponse extends StatefulWidget {
   const RequestResponse({super.key});
@@ -15,11 +16,13 @@ class _RequestResponseState extends State<RequestResponse> {
   String message = "Request posts";
   bool isLoading = false;
   late final ApiClient client;
+  List<Post> posts = [];
 
   @override
   void initState() {
     super.initState();
     client = ApiClient();
+    getPosts();
   }
 
   Future<void> getPosts() async {
@@ -34,6 +37,15 @@ class _RequestResponseState extends State<RequestResponse> {
       debugPrint('Status: ${response.statusCode}');
       debugPrint('Headers: ${response.headers}');
       // debugPrint('Data: ${response.data}');
+      final _posts = (response.data as List).map(
+        (json) {
+          return Post.fromJson(json);
+        },
+      ).toList();
+
+      setState(() {
+        posts = _posts;
+      });
     } on Exception catch (e) {
       debugPrint(e.toString());
     } finally {
@@ -46,32 +58,63 @@ class _RequestResponseState extends State<RequestResponse> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: .end,
-        crossAxisAlignment: .center,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Posts'),
+      ),
+      body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 32,
-            ),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: getPosts,
-                child: isLoading
-                    ? SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: const CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : Text(message),
+          if (posts.isEmpty) ...[
+            Positioned(
+              top: 10,
+              right: 10,
+              child: Center(
+                child: Text('No posts found!'),
               ),
             ),
-          ),
+          ],
+
+          if (posts.isNotEmpty) ...[
+            ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (ctx, index) {
+                final post = posts[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4.0,
+                  ),
+                  child: Card(
+                    elevation: 1,
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text(
+                          post.userId.toString(),
+                        ),
+                      ),
+                      title: Text(post.title),
+                      subtitle: Text(
+                        post.body,
+                        style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        textAlign: TextAlign.justify,
+                        maxLines: 1,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+          
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(
+          Icons.add,
+        ),
       ),
     );
   }
