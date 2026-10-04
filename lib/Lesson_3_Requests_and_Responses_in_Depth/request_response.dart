@@ -89,7 +89,7 @@ class _RequestResponseState extends State<RequestResponse> {
                     child: ListTile(
                       leading: CircleAvatar(
                         child: Text(
-                          post.userId.toString(),
+                          post.id.toString(),
                         ),
                       ),
                       title: Text(post.title),
@@ -100,6 +100,9 @@ class _RequestResponseState extends State<RequestResponse> {
                         ),
                         textAlign: TextAlign.justify,
                         maxLines: 1,
+                      ),
+                      trailing: Text(
+                        post.userId.toString(),
                       ),
                     ),
                   ),
