@@ -115,4 +115,19 @@ class ApiClient {
       },
     );
   }
+
+  Future<void> downloadProgress() async {
+    await _dio.download(
+      '/files/report.pdf',
+      '/some/path/report.pdf',
+      onReceiveProgress: (received, total) {
+        if (total != -1) {
+          final progress = received / total;
+          print(
+            'Download: ${(progress * 100).toStringAsFixed(1)}%',
+          );
+        }
+      },
+    );
+  }
 }
