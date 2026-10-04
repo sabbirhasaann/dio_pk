@@ -33,4 +33,15 @@ class ApiClient {
       '/posts/$id',
     );
   }
+
+  Future<Response<dynamic>> createPost({required String title, required String body, required int userId}) async{
+    return _dio.post(
+      '/posts',
+      data: {
+        'title': title,
+        'body': body,
+        'userId': userId,
+      }
+    );
+  }
 }
