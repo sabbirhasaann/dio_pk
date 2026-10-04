@@ -91,4 +91,20 @@ class ApiClient {
       ),
     );
   }
+
+  Future<Response<dynamic>> uploadAvatar() async {
+    final String filePath = '';
+    final formData = FormData.fromMap({
+      'name': "Abu",
+      'avatar': await MultipartFile.fromFile(
+        filePath,
+        filename: 'profile.jpg',
+      ),
+    });
+
+    return await _dio.post(
+      '/profile/',
+      data: formData,
+    );
+  }
 }
