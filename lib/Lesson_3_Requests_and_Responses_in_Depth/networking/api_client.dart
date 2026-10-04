@@ -18,7 +18,19 @@ class ApiClient {
 
   final Dio _dio;
 
-  Future<Response<dynamic>> getPosts() async {
-    return await _dio.get('/posts');
+  Future<Response<dynamic>> getPosts({int? userId, int? limit}) async {
+    return await _dio.get(
+      '/posts',
+      queryParameters: {
+        'userId': ?userId,
+        '_limit': ?limit,
+      },
+    );
+  }
+
+  Future<Response<dynamic>> getPost(int id) async {
+    return await _dio.get(
+      '/posts/$id',
+    );
   }
 }
