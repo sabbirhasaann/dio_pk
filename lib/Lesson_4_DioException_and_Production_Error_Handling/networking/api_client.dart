@@ -52,4 +52,14 @@ class ApiClient {
   void cancelRequest() {
     _cancelToken?.cancel();
   }
+
+  Future<Response<dynamic>> triggerServerError() async {
+    try {
+      return await _dio.get('/api/test/500/');
+    } on DioException catch (e) {
+      print("Response code: ${e.response?.statusCode}");
+      print("Exception type: ${e.type}");
+      throw _errorMapper.map(e);
+    }
+  }
 }

@@ -75,6 +75,24 @@ class _DioErrorDemoPageState extends State<DioErrorDemoPage> {
     }
   }
 
+  Future<void> _triggerServerError() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+      final response = await apiClient.triggerServerError();
+      debugPrint(response.toString());
+    } on AppException catch (e) {
+      setState(() {
+        _message = e.message;
+      });
+    } finally {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -103,6 +121,11 @@ class _DioErrorDemoPageState extends State<DioErrorDemoPage> {
             ElevatedButton(
               onPressed: _loading ? null : _loadMissingPost,
               child: const Text('404 Request'),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: _loading ? null : _triggerServerError,
+              child: const Text('Trigger Server Error'),
             ),
             const SizedBox(height: 24),
             if (_loading)
