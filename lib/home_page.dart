@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'core/networking/api_client.dart';
 import './Lesson_3_Requests_and_Responses_in_Depth/request_response.dart';
+import './Lesson_4_DioException_and_Production_Error_Handling/dio_error_demo_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -39,6 +40,10 @@ class _HomePageState extends State<HomePage> {
     {
       'title': 'Lesson 3 - Request and Response',
       'screen': RequestResponse(),
+    },
+    {
+      'title': 'Lesson 4 - DioException and Production Error Handling',
+      'screen': DioErrorDemoPage(),
     },
   ];
 
