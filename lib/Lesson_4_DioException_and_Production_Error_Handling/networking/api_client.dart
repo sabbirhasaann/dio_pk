@@ -6,7 +6,8 @@ class ApiClient {
   ApiClient()
     : _dio = Dio(
         BaseOptions(
-          baseUrl: 'https://jsonplaceholder.typicode.com',
+          // baseUrl: 'https://jsonplaceholder.typicode.com',
+          baseUrl: 'https://this-domain-does-not-exist-123456.com',
           connectTimeout: const Duration(seconds: 10),
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
