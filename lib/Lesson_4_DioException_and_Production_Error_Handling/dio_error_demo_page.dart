@@ -93,6 +93,32 @@ class _DioErrorDemoPageState extends State<DioErrorDemoPage> {
     }
   }
 
+  Future<void> startTestCancellation() async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+
+      final response = await apiClient.getPostWithCancellation();
+      setState((){
+        _message = response.toString();
+      });
+      print(response.toString());
+    } on AppException catch (e) {
+      setState(() {
+        _message = e.message;
+      });
+    } finally {
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
+  Future<void> cancel() async {
+    apiClient.cancelRequest();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -126,6 +152,16 @@ class _DioErrorDemoPageState extends State<DioErrorDemoPage> {
             ElevatedButton(
               onPressed: _loading ? null : _triggerServerError,
               child: const Text('Trigger Server Error'),
+            ),
+            const SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _loading ? null : startTestCancellation,
+              child: const Text('Start Test'),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: cancel,
+              child: const Text('Cancel Test'),
             ),
             const SizedBox(height: 24),
             if (_loading)

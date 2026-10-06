@@ -8,8 +8,8 @@ class ApiClient {
         BaseOptions(
           baseUrl: 'https://jsonplaceholder.typicode.com',
           // baseUrl: 'https://this-domain-does-not-exist-123456.com',
-          // connectTimeout: const Duration(seconds: 10),
-          connectTimeout: const Duration(milliseconds: 1),
+          connectTimeout: const Duration(seconds: 10),
+          // connectTimeout: const Duration(milliseconds: 1),
           sendTimeout: const Duration(seconds: 10),
           receiveTimeout: const Duration(seconds: 10),
 
@@ -42,11 +42,17 @@ class ApiClient {
   Future<Response<dynamic>> getPostWithCancellation() async {
     _cancelToken = CancelToken();
     try {
+      await Future.delayed(
+        const Duration(
+          seconds: 2,
+        ),
+      );
       return await _dio.get(
         '/posts/1',
         cancelToken: _cancelToken,
       );
     } on DioException catch (e) {
+      print(e.type);
       throw _errorMapper.map(e);
     }
   }
