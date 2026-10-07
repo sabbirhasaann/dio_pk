@@ -4,6 +4,7 @@ import 'core/networking/api_client.dart';
 import './Lesson_3_Requests_and_Responses_in_Depth/request_response.dart';
 import './Lesson_4_DioException_and_Production_Error_Handling/dio_error_demo_page.dart';
 import './Lesson_5_Dio_Interceptors/dio_interceptors.dart';
+import './Lesson_6_Authentication_Interceptor/authentication_interceptor_demo_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,6 +50,10 @@ class _HomePageState extends State<HomePage> {
     {
       'title': 'Lesson 5 - Dio Interceptors',
       'screen': DioInterceptors(),
+    },
+    {
+      'title': 'Lesson 6 - Authentication Interceptor',
+      'screen': AuthenticationInterceptorDemoPage(),
     },
   ];
 
