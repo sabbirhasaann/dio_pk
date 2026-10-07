@@ -13,6 +13,7 @@ class LoggingInterceptor extends Interceptor {
     print('------Logging----------');
     print("Request Time: ${options.headers['X-Request-Time']}");
     print('Request Id: ${options.headers['X-Request-ID']}');
+    print("Request specific header: ${options.headers['X-Resource']}");
 
     handler.next(options);
   }

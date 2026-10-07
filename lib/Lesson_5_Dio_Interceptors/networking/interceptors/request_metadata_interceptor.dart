@@ -15,6 +15,10 @@ class RequestMetadataInterceptor extends Interceptor {
     options.headers['X-Request-ID'] = requestId;
     options.extra['startTime'] = DateTime.now();
 
+    if (options.path.startsWith('/posts')) {
+      options.headers['X-Resource'] = 'posts';
+    }
+
     handler.next(options);
   }
 }
