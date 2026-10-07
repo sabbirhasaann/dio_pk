@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 import '../errors/dio_error_mapper.dart';
 import './interceptors/logging_interceptor.dart';
+import './interceptors/request_metadata_interceptor.dart';
 
 class ApiClient {
   late final Dio _dio;
@@ -19,6 +20,9 @@ class ApiClient {
           return status != null && status < 500;
         },
       ),
+    );
+    _dio.interceptors.add(
+      RequestMetadataInterceptor(),
     );
     _dio.interceptors.add(
       LoggingInterceptor(),
