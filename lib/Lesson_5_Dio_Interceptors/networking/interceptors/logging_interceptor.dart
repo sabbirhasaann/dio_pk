@@ -10,6 +10,9 @@ class LoggingInterceptor extends Interceptor {
     print('id: 2→ Query: ${options.queryParameters}');
     print('id: 2→ Data: ${options.data}');
 
+    print('------Logging----------');
+    print("Request Time: ${options.headers['X-Request-Time']}");
+
     handler.next(options);
   }
 
