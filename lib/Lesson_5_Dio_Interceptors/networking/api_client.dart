@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import '../errors/dio_error_mapper.dart';
 import './interceptors/logging_interceptor.dart';
 import './interceptors/request_metadata_interceptor.dart';
+import './interceptors/blocking_interceptor.dart';
 
 class ApiClient {
   late final Dio _dio;
@@ -30,6 +31,9 @@ class ApiClient {
     );
     _dio.interceptors.add(
       LoggingInterceptor(),
+    );
+    _dio.interceptors.add(
+      BlockingInterceptor(),
     );
   }
 
