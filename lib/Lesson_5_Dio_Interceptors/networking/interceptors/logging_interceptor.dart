@@ -25,6 +25,13 @@ class LoggingInterceptor extends Interceptor {
     print('RESPONSE');
     print('← ${response.statusCode} ${response.requestOptions.uri}');
     print('← Data: ${response.data}');
+
+    final startTime = response.requestOptions.extra['startTime'];
+    final duration = DateTime.now().difference(startTime);
+
+    print("-----------Duration---------");
+    print('Request Duration: ${duration.inMilliseconds} ms');
+
     handler.next(response);
   }
 
@@ -39,6 +46,12 @@ class LoggingInterceptor extends Interceptor {
     print('id: 3 ✕ Type: ${err.type}');
     print('id: 3 ✕ Message: ${err.message}');
     print('id: 3 ✕ Status: ${err.response?.statusCode}');
+
+    final startTime = err.requestOptions.extra['startTime'];
+    final duration = DateTime.now().difference(startTime);
+
+    print("-----------Duration---------");
+    print('Request Duration: ${duration.inMilliseconds} ms');
 
     handler.next(err);
   }

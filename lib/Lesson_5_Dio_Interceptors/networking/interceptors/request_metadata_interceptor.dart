@@ -13,6 +13,7 @@ class RequestMetadataInterceptor extends Interceptor {
     options.headers['X-client'] = 'Flutter';
     options.headers['X-Request-Time'] = DateTime.now().toIso8601String();
     options.headers['X-Request-ID'] = requestId;
+    options.extra['startTime'] = DateTime.now();
 
     handler.next(options);
   }
