@@ -21,6 +21,10 @@ class ApiClient {
         },
       ),
     );
+    _configureInterceptors();
+  }
+
+  void _configureInterceptors() {
     _dio.interceptors.add(
       RequestMetadataInterceptor(),
     );
