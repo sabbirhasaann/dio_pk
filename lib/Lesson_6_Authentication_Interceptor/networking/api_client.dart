@@ -3,13 +3,15 @@ import 'package:dio/dio.dart';
 import '../errors/dio_error_mapper.dart';
 import './interceptors/logging_interceptor.dart';
 import './interceptors/request_metadata_interceptor.dart';
+import '../auth/auth_interceptor.dart';
+import '../auth/token_storage.dart';
 
 class ApiClient {
   late final Dio _dio;
   final DioErrorMapper _errorMapper = const DioErrorMapper();
   CancelToken? _cancelToken;
 
-  ApiClient() {
+  ApiClient({required TokenStorage tokenStorage}) {
     _dio = Dio(
       BaseOptions(
         baseUrl: 'https://jsonplaceholder.typicode.com',
@@ -21,13 +23,20 @@ class ApiClient {
         },
       ),
     );
-    _configureInterceptors();
+    _configureInterceptors(tokenStorage);
   }
 
-  void _configureInterceptors() {
+  void _configureInterceptors(TokenStorage tokenStorage) {
     _dio.interceptors.add(
       RequestMetadataInterceptor(),
     );
+
+    _dio.interceptors.add(
+      AuthInterceptor(
+        tokenStorage: tokenStorage,
+      ),
+    );
+
     _dio.interceptors.add(
       LoggingInterceptor(),
     );
