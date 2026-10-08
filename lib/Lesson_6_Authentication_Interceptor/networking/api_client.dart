@@ -44,7 +44,14 @@ class ApiClient {
 
   Future<Response<dynamic>> getValidPost() async {
     try {
-      return await _dio.get('/posts/1');
+      return await _dio.get(
+        '/posts/1',
+        options: Options(
+          extra: {
+            AuthInterceptor.requiresAuthKey: false,
+          },
+        ),
+      );
     } on DioException catch (e) {
       throw _errorMapper.map(e);
     }
